@@ -26,9 +26,8 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           SHA256=$(shasum -a 256 "dist/MagicStackBar-${VERSION}.zip" | cut -d' ' -f1)
+          printf 'sha256: `%s`\n\nhomebrew-tap の Casks/magic-stack-bar.rb の version と sha256 を更新してください。\n' "$SHA256" > /tmp/notes.md
           gh release create "$GITHUB_REF_NAME" \
             "dist/MagicStackBar-${VERSION}.zip" \
             --title "MagicStackBar ${VERSION}" \
-            --notes "sha256: \`${SHA256}\`
-
-homebrew-tap の Casks/magic-stack-bar.rb の version と sha256 を更新してください。"
+            --notes-file /tmp/notes.md
